@@ -62,7 +62,7 @@ common pool and execute it. CompletableFuture implemented the methods from the i
 Using the CompletableFuture we can execute a task which will return CompletableFuture<Void> or will return CompletableFuture<AnyType>.
 
 **1) CompletableFuture.runAsync:**  
-==> will accept Runnable Interface and an optional Executor for running under a specific thread pool. If the Executor is provided it will use the common thread pool. This will return CompletableFuture<Void>.
+This method will accept Runnable Interface and an optional Executor for running under a specific thread pool. If the Executor is provided it will use the common thread pool. This will return CompletableFuture<Void>.
 
 ```
 private static void callRunAsync() {
@@ -71,7 +71,7 @@ private static void callRunAsync() {
 ```
 
 **2) CompletableFuture.supplyAsync:**  
-==> will accept Supplier Interface and an optional Executor for running under a specific thread pool. If the Executor is provided it will use the common thread pool. This will return CompletableFuture<AnyType>.
+This method will accept Supplier Interface and an optional Executor for running under a specific thread pool. If the Executor is provided it will use the common thread pool. This will return CompletableFuture<AnyType>.
 
 ```
 private static void callSupplyAsync() {
@@ -125,14 +125,14 @@ private static void thenRunBehavior() {
 }
 ```
 **In the case of delay the result:**  
-Waiting for the result
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Successfully completed Async call in:ForkJoinPool.commonPool-worker-1
+Waiting for the result  
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Successfully completed Async call in:ForkJoinPool.commonPool-worker-1  
 
 **In the case of no delay the result:(commenting out LongTask.simulate(2000))**  
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Successfully completed Async call in:main
-Waiting for the result
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Successfully completed Async call in:main  
+Waiting for the result  
 
 #### 2) thenRunAsync(Runnable):  
 thenRunAsync will always be executed in a new thread even though the caller thread is available after the CompletableFuture has completed.
@@ -152,20 +152,20 @@ private static void thenRunAsyncBehavior() {
 }
 ```
 **In the case of delay the result:**  
-Waiting for the result
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Successfully completed Async call in:ForkJoinPool.commonPool-worker-1
+Waiting for the result  
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Successfully completed Async call in:ForkJoinPool.commonPool-worker-1  
 
 **In the case of no delay the result:(commenting out LongTask.simulate(2000))**  
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Waiting for the result
-Successfully completed Async call in:ForkJoinPool.commonPool-worker-1
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Waiting for the result  
+Successfully completed Async call in:ForkJoinPool.commonPool-worker-1  
 
 **Difference:**  
 The method thenRun allows the execution of the Runnable directly in the caller’s thread, if the CompletableFuture has already completed. Since even in a direct invocation chain like CompletableFuture.runAsync(…).thenRun(…); there’s the possibility that the asynchronous task has already completed by the time thenRun is invoked, there’s the possibility that the dependent action is executed in the caller’s thread, unlike thenRunAsync which will always use the default (or provided) executor.
 
 #### Parse the CompletableFuture result:  
-If we want to process the result of the CompletableFuture we can use the below methods. Difference between these two methods are similar like thenRun and thenRunAsync.
+If we want to process the result of the CompletableFuture we can use the below methods. Difference between these two methods are similar like thenRun and thenRunAsync.  
 #### 1) thenAccept(Consumer):  
 ```
 private static void thenAcceptBehavior() {
@@ -184,16 +184,16 @@ private static void thenAcceptBehavior() {
 }
 ```
 **In the case of delay the result:**  
-Waiting for the result
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Successfully completed Async call in:ForkJoinPool.commonPool-worker-1
-result:1
+Waiting for the result  
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Successfully completed Async call in:ForkJoinPool.commonPool-worker-1  
+result:1  
 
 **In the case of no delay the result:(commenting out LongTask.simulate(2000))**  
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Successfully completed Async call in:main
-result:1
-Waiting for the result
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Successfully completed Async call in:main  
+result:1  
+Waiting for the result  
 
 #### 2) thenAcceptAsync(Consumer):  
 
@@ -214,16 +214,16 @@ private static void tthenAcceptAsyncBehavior() {
 }
 ```
 **In the case of delay the result:**  
-Waiting for the result
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Successfully completed Async call in:ForkJoinPool.commonPool-worker-1
-result:1
+Waiting for the result  
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Successfully completed Async call in:ForkJoinPool.commonPool-worker-1  
+result:1  
 
 **In the case of no delay the result:(commenting out LongTask.simulate(2000))**  
-Async call is processed by:ForkJoinPool.commonPool-worker-1
-Waiting for the result
-Successfully completed Async call in:ForkJoinPool.commonPool-worker-1
-result:1
+Async call is processed by:ForkJoinPool.commonPool-worker-1  
+Waiting for the result  
+Successfully completed Async call in:ForkJoinPool.commonPool-worker-1  
+result:1  
 
 #### Handling Exceptions:  
 In Future interface there is no functionality to handle the exceptions. But in CompletableFuture we have special handling where it will wrap the actual exception caused inside the 
@@ -267,7 +267,7 @@ public static void exceptionWithoutBreaking() {
 }
 ```
 
-#### Transforming Results:  
+#### Transforming Results:thenApply()  
 We can use thenApply / thenApplyAsync method to process the result of the Future object example here we convert temperature from Celsius to Fahrenheit. Once the Future object is processed we can use the thenAccept method to get the result and print it.
 
 ```
@@ -284,7 +284,8 @@ private static double toFahrenheit(double celsius) {
 
 ```
 
-#### Composing CompletableFuture:  
+#### Composing CompletableFuture:thenCompose()  
+thenCompose() is used to combine two CompletableFutures where one future is dependent on the other.
 We can use thenCompose / thenComposeAsync to call the second Async task upon completion of the first task. In this we can use these method to chain together all the CompletableFutures.
 thenCompose / thenComposeAsync will return CompletionStage, which means it will give new CompletableFuture. so we can chain together.
 
@@ -308,7 +309,8 @@ private static CompletableFuture<String> getPlaylistAsync(String email) {
 }
 ```
 
-#### Combining CompletableFuture:  
+#### Combining CompletableFuture:thenCombine()  
+thenCombine() is used when we want two Futures to run independently and do something after both are complete. The callback function passed to thenCombine() will be called when both the CompletableFutures are complete.
 We can start two Async task in parallel and once the results are ready we can combine it together. For example we are getting the price of an item as well as the currency conversion rate. Once the results are ready we can combine them together. For this we can use thenCombine / thenCombineAsync. 
 
 ```
@@ -326,7 +328,7 @@ public static void combineFutures() {
 }
 ```
 
-#### Waiting for Task Completion:
+#### Waiting for Task Completion:allOf & anyOf  
 **allOf:**  
 We can use allOf method to wait for all the task to be completed. It will return CompletableFuture of Void. 
 ```
@@ -369,5 +371,51 @@ public static void waitForAnyoneTaskCompleted() {
 ```
 
 As soon as the result arrived from anyone service, it will be returned.
+
+#### Handling Timeouts:orTimoeut  
+We can specify explicit timeout for the future response which will take more time in consuming the external/remote service. These methods are introduced in the Jdk9
+
+```
+public static void timeoutExceptionDemo() {
+	CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+		System.out.println("Calling a slow service which will response after 3 seconds");
+		LongTask.simulate(3000);
+		return 10;
+	});
+
+	try {
+		future
+				.orTimeout(1, TimeUnit.SECONDS)
+				.get();
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	} catch (ExecutionException e) {
+		e.printStackTrace();
+	}
+}
+```
+future.orTimeout(1, TimeUnit.SECONDS) will timeout after 1 seconds and wrap the TimeoutException inside the ExecutionException.
+
+**completeOnTimeout:**  
+Instead simply catching exception we can use the completeOnTimeout method to give back the default value instead of throwing an TimeoutException.
+
+```
+public static void timeoutExceptionDefaultValueDemo() {
+	CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+		System.out.println("Calling a slow service which will response after 3 seconds");
+		LongTask.simulate(3000);
+		return 10;
+	});
+
+	future
+			.completeOnTimeout(20, 1, TimeUnit.SECONDS)
+			.thenAccept(System.out::println);
+	LongTask.simulate(3000);
+}
+
+```
+
+##### FlightBookingDemo.java
+Finally implemented a Flight Price Quoting Service where have to fetch the prices from three different sites simultaneously and print them once the results arrived.
 
 
